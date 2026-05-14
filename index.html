@@ -944,7 +944,6 @@ function applySite(){
   document.getElementById('profileBio').textContent=p.bio||'';
   const pl=document.getElementById('profileLinks');
   pl.innerHTML='';
-  if(l.github)pl.innerHTML+=`<a class="profile-link" href="${l.github}" target="_blank">⊹ GitHub</a>`;
   if(l.email) pl.innerHTML+=`<a class="profile-link" href="mailto:${l.email}">✉ Email</a>`;
   // cat nav
   renderCatNav();
