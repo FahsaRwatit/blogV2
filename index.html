@@ -4,6 +4,9 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>fahsa's blog</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" href="/favicon.png"/>
+<link rel="apple-touch-icon" href="/favicon.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700;900&family=JetBrains+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -833,27 +836,51 @@ async function fetchText(path){
 // ════════════════════════════════════
 //  POSTS
 // ════════════════════════════════════
+// 递归收集某目录下所有 .md 文件（支持任意层级子文件夹）
+async function collectMdFiles(dirPath, cat){
+  let mdFiles = [];
+  try{
+    const items = await ghGet(dirPath);
+    const jobs = items.map(async item=>{
+      if(item.type==='file' && item.name.endsWith('.md')){
+        mdFiles.push({path:item.path, name:item.name, cat});
+      } else if(item.type==='dir'){
+        // 递归进子文件夹
+        const sub = await collectMdFiles(item.path, cat);
+        mdFiles = mdFiles.concat(sub);
+      }
+    });
+    await Promise.allSettled(jobs);
+  }catch(e){/* 目录不存在则跳过 */}
+  return mdFiles;
+}
+
 async function loadPosts(){
   const cats = SITE?.categories||[];
-  const jobs = [];
-  for(const c of cats){
-    jobs.push(ghGet(`posts/${c.id}`).then(files=>{
-      const mds=files.filter(f=>f.name.endsWith('.md'));
-      return Promise.allSettled(mds.map(f=>fetchText(f.path).then(txt=>({txt,name:f.name,cat:c.id}))));
-    }).catch(()=>[]));
+  // 并发递归扫描所有分类目录
+  const scanJobs = cats.map(c => collectMdFiles(`posts/${c.id}`, c.id));
+  const scanResults = await Promise.allSettled(scanJobs);
+
+  // 拍平所有找到的 md 文件
+  const allFiles = [];
+  for(const r of scanResults){
+    if(r.status==='fulfilled') allFiles.push(...r.value);
   }
-  const results = await Promise.allSettled(jobs);
+
+  // 并发读取所有文件内容
+  const fetchJobs = allFiles.map(f =>
+    fetchText(f.path).then(txt=>({txt, name:f.name, cat:f.cat}))
+  );
+  const fetchResults = await Promise.allSettled(fetchJobs);
+
   POSTS=[];TAGS={};
-  for(const r of results){
+  for(const r of fetchResults){
     if(r.status!=='fulfilled')continue;
-    for(const item of r.value){
-      if(item.status!=='fulfilled')continue;
-      const {txt,name,cat}=item.value;
-      const p=parsePost(txt,name,cat);
-      if(p){
-        POSTS.push(p);
-        (p.tags||[]).forEach(t=>{TAGS[t]=(TAGS[t]||0)+1;});
-      }
+    const {txt,name,cat}=r.value;
+    const p=parsePost(txt,name,cat);
+    if(p){
+      POSTS.push(p);
+      (p.tags||[]).forEach(t=>{TAGS[t]=(TAGS[t]||0)+1;});
     }
   }
   POSTS.sort((a,b)=>new Date(b.date)-new Date(a.date));
