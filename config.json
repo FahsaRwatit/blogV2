@@ -1,0 +1,30 @@
+{
+  "site": {
+    "title": "fahsa's blog",
+    "subtitle": "凡事都抵不过用心",
+    "emoji": "🍥",
+    "since": 2020
+  },
+  "profile": {
+    "name": "Fahsa",
+    "avatar": "",
+    "emoji": "🍥",
+    "bio": "凡事都抵不过用心",
+    "location": "Shenzhen",
+    "links": {
+      "github": "https://github.com/FahsaRwatit",
+      "email": ""
+    }
+  },
+  "categories": [
+    { "id": "Go",     "name": "Go",     "icon": "🐹", "color": "#00ADD8" },
+    { "id": "Redis",  "name": "Redis",  "icon": "🔴", "color": "#DC382D" },
+    { "id": "Linux",  "name": "Linux",  "icon": "🐧", "color": "#FCC624" },
+    { "id": "MySQL",  "name": "MySQL",  "icon": "🐬", "color": "#4479A1" },
+    { "id": "Python", "name": "Python", "icon": "🐍", "color": "#3776AB" },
+    { "id": "Other",  "name": "Other",  "icon": "📌", "color": "#888888" }
+  ],
+  "admin": {
+    "passwordHash": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
+  }
+}
