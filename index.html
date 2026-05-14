@@ -409,7 +409,7 @@ textarea.editor-ta{
 .settings-section-title{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--text);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
 .settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .settings-full{grid-column:1/-1}
-.cat-editor-row{display:grid;grid-template-columns:1fr 1fr 60px 36px;gap:8px;margin-bottom:8px;align-items:center}
+.cat-editor-row{display:grid;grid-template-columns:50px 1fr 1fr 60px 36px;gap:8px;margin-bottom:8px;align-items:center}
 
 /* Pagination */
 .pagination{display:flex;justify-content:center;gap:6px;margin-top:24px}
@@ -1264,6 +1264,7 @@ function renderCatEditor(){
   const cats=SITE?.categories||[];
   document.getElementById('catEditor').innerHTML=cats.map((c,i)=>`
     <div class="cat-editor-row" id="catRow-${i}">
+      <input class="editor-input-sm" id="cIcon-${i}" value="${c.icon||'📁'}" placeholder="图标" style="text-align:center;font-size:18px;padding:6px 4px" title="填入 emoji 作为分类图标"/>
       <input class="editor-input-sm" id="cName-${i}" value="${c.name}" placeholder="分类名"/>
       <input class="editor-input-sm" id="cId-${i}" value="${c.id}" placeholder="ID(文件夹名)" style="font-family:var(--mono)"/>
       <input type="color" id="cColor-${i}" value="${c.color||'#888888'}" style="height:38px;width:100%;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--bg);cursor:pointer;padding:2px 4px"/>
@@ -1279,7 +1280,7 @@ async function saveSettings(){
   LS.set('blog_cfg',CFG);
   const cats=[];let i=0;
   while(document.getElementById('catRow-'+i)){
-    cats.push({id:g('cId-'+i),name:g('cName-'+i),icon:(SITE?.categories[i]?.icon||'📁'),color:document.getElementById('cColor-'+i).value});i++;
+    cats.push({id:g('cId-'+i),name:g('cName-'+i),icon:g('cIcon-'+i)||'📁',color:document.getElementById('cColor-'+i).value});i++;
   }
   // password
   const np=g('stNewPw'),np2=g('stNewPw2');
