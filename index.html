@@ -771,10 +771,18 @@ function toggleTheme(){
 // ════════════════════════════════════
 //  BOOT
 // ════════════════════════════════════
+// ── 硬编码仓库配置，访客无需配置直接读取文章 ──
+const DEFAULT_CFG = {
+  user:   'FahsaRwatit',      // GitHub 用户名
+  repo:   'blogV2',           // 仓库名
+  branch: 'main',             // 分支
+  token:  ''                  // Token（可留空，公开仓库每小时60次）
+};
+
 async function boot(){
-  if(!CFG||!CFG.user||!CFG.repo){
-    show('setupModal');return;
-  }
+  // 优先用本地存储（管理员设置过），否则用硬编码默认值
+  if(!CFG||!CFG.user||!CFG.repo) CFG = DEFAULT_CFG;
+  LS.set('blog_cfg', CFG);
   if(SITE) applySite();
   await loadAll();
 }
@@ -1101,7 +1109,7 @@ function renderAbout(){
     <div class="skill-cloud">${(p.skills||[]).map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div>
     <div style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border);font-family:var(--mono);font-size:11px;color:var(--text-muted)">
       © ${s.since||2020} – ${new Date().getFullYear()} ${p.name||''} · Built with ❤
-      
+      ${l.github?`<br/><a href="${l.github}" target="_blank" style="color:var(--accent)">${l.github}</a>`:''}
     </div>`;
 }
 
