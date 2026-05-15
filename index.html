@@ -600,15 +600,15 @@ textarea.editor-ta{
 
 <!-- MOBILE BOTTOM NAV (only visible on mobile) -->
 <div class="mobile-nav" id="mobileNav" style="display:none">
-  <button class="mobile-nav-item active" id="mnav-home" onclick="goView('home',null);setMobileNav('mnav-home')">
+  <button class="mobile-nav-item active" id="mnav-home" onclick="goView('home',null)">
     <span class="mobile-nav-icon">🏠</span>
     <span class="mobile-nav-label">首页</span>
   </button>
-  <button class="mobile-nav-item" id="mnav-archive" onclick="goView('archive',null);setMobileNav('mnav-archive')">
+  <button class="mobile-nav-item" id="mnav-archive" onclick="goView('archive',null)">
     <span class="mobile-nav-icon">📚</span>
     <span class="mobile-nav-label">归档</span>
   </button>
-  <button class="mobile-nav-item" id="mnav-about" onclick="goView('about',null);setMobileNav('mnav-about')">
+  <button class="mobile-nav-item" id="mnav-about" onclick="goView('about',null)">
     <span class="mobile-nav-icon">👤</span>
     <span class="mobile-nav-label">关于</span>
   </button>
@@ -1234,6 +1234,7 @@ function renderAbout(){
     <div class="skill-cloud">${(p.skills||[]).map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div>
     <div style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border);font-family:var(--mono);font-size:11px;color:var(--text-muted)">
       © ${s.since||2020} – ${new Date().getFullYear()} ${p.name||''} · Built with ❤
+      ${l.github?`<br/><a href="${l.github}" target="_blank" style="color:var(--accent)">${l.github}</a>`:''}
     </div>`;
 }
 
@@ -1462,6 +1463,9 @@ function goView(name,btn){
   if(name==='about')renderAbout();
   if(name==='archive')renderArchive();
   window.scrollTo(0,0);
+  // 手机底部导航同步高亮
+  const mnavMap = { home:'mnav-home', archive:'mnav-archive', about:'mnav-about' };
+  if(mnavMap[name]) setMobileNav(mnavMap[name]);
 }
 function goBack(){goView(prevView);}
 
@@ -1511,15 +1515,7 @@ function syncMobileHeader(){
 // 监听窗口变化
 window.addEventListener('resize', initMobile);
 
-// 覆盖 goView，手机端同步底部导航高亮
-const _origGoView = goView;
-function goView(name, btn){
-  _origGoView(name, btn);
-  // 手机底部导航同步
-  const map = { home:'mnav-home', archive:'mnav-archive', about:'mnav-about' };
-  if(map[name]) setMobileNav(map[name]);
-  // 手机端文章/设置页不高亮任何底部导航
-}
+// goView 内部直接同步手机底部导航，不需要覆盖
 
 // ════════════════════════════════════
 //  START
