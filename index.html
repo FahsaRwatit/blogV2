@@ -1101,7 +1101,7 @@ function renderAbout(){
     <div class="skill-cloud">${(p.skills||[]).map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div>
     <div style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border);font-family:var(--mono);font-size:11px;color:var(--text-muted)">
       © ${s.since||2020} – ${new Date().getFullYear()} ${p.name||''} · Built with ❤
-      ${l.github?`<br/><a href="${l.github}" target="_blank" style="color:var(--accent)">${l.github}</a>`:''}
+      
     </div>`;
 }
 
