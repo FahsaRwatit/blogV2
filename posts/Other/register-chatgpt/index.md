@@ -22,39 +22,39 @@ tags: ["openai"]
 
 
 
-![1](1.png)
+![1](https://blog.fahsa.cn/posts/Other/register-chatgpt/1.png)
 
 
 
-![2](2.png)
+![2](https://blog.fahsa.cn/posts/Other/register-chatgpt/2.png)
 
 
 
-![3](3.png)
+![3](https://blog.fahsa.cn/posts/Other/register-chatgpt/3.png)
 
 **验证邮箱**
 
 
 
-![4](4.png)
+![4](https://blog.fahsa.cn/posts/Other/register-chatgpt/4.png)
 
 ### 购买国外手机号，接收验证码
 
 
 
-![5](5.png)
+![5](https://blog.fahsa.cn/posts/Other/register-chatgpt/5.png)
 
 选择购买的手机号所对应国家，然后填入手机号码，准备接收验证码，到接码平台查看验证码，多刷新几次：
 
-![5_1](5_1.png)
+![5_1](https://blog.fahsa.cn/posts/Other/register-chatgpt/5_1.png)
 
 
 
-![6](6.png)
+![6](https://blog.fahsa.cn/posts/Other/register-chatgpt/6.png)
 
 ### 注册成功
 
-![7](7.png)
+![7](https://blog.fahsa.cn/posts/Other/register-chatgpt/7.png)
 
 
 
